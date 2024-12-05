@@ -1,4 +1,4 @@
-# Package Status
+# SPM Version Status
 
 A command line utility to check the latest versions available for the SPM packages declared as depedency in your Xcode Project or SPM package.
 
