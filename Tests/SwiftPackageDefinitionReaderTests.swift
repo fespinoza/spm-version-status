@@ -1,5 +1,5 @@
 import Foundation
-@testable import SPMVersionStatus
+@testable import spm_version_status
 import Testing
 import XcodeProj
 
@@ -22,7 +22,7 @@ struct SwiftPackageDefinitionReaderTests {
             ],
             targets: [
                 .executableTarget(
-                    name: "SPMVersionStatus",
+                    name: "spm-version-status",
                     dependencies: [
                         .product(name: "ArgumentParser", package: "swift-argument-parser"),
                         "XcodeProj",
@@ -32,7 +32,7 @@ struct SwiftPackageDefinitionReaderTests {
                 ),
                 .testTarget(
                     name: "SPMVersionStatusTests",
-                    dependencies: ["SPMVersionStatus"]
+                    dependencies: ["spm-version-status"]
                 )
             ]
         )

@@ -13,7 +13,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "SPMVersionStatus",
+            name: "spm-version-status",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 "XcodeProj",
@@ -23,7 +23,7 @@ let package = Package(
         ),
         .testTarget(
             name: "SPMVersionStatusTests",
-            dependencies: ["SPMVersionStatus"]
+            dependencies: ["spm-version-status"]
         ),
     ]
 )
