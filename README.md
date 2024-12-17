@@ -71,12 +71,6 @@ If you just want to list the versions released since the last used version in yo
 spm-version-status changelog --list
 ```
 
-Or if you want to open the ouput as a markdown file you can call
-
-```
-spm-version-status changelog --open-as-markdown
-```
-
 ## Development
 
 ```bash
