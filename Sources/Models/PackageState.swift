@@ -40,7 +40,7 @@ struct PackageState {
 
 struct PackageDependencyDeclaration: Equatable {
     let repositoryURL: URL
-    let versionRequirement: XCRemoteSwiftPackageReference.VersionRequirement
+    let versionRequirement: VersionRequirement
 }
 
 enum PackageComparison: Int {

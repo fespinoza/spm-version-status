@@ -3,7 +3,7 @@ import Version
 
 enum Utils {
     static func getTags(for repo: URL) throws -> [String] {
-        let v1 = Utils.shell(
+        let v1 = try Utils.shell(
             "git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags \(repo)"
         )
 
@@ -25,7 +25,7 @@ enum Utils {
     }
 
     /// Runs a shell command and returns the output
-    static func shell(_ command: String) -> String {
+    @discardableResult static func shell(_ command: String) throws -> String {
         let task = Process()
         let pipe = Pipe()
 
@@ -34,12 +34,28 @@ enum Utils {
         task.arguments = ["-c", command]
         task.launchPath = "/bin/sh"
         task.standardInput = nil
-        task.launch()
+        try task.run()
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8)!
 
         return output
+    }
+
+    /// Runs a command and check the status
+    static func checkStatus(for command: String) throws -> Int {
+        let task = Process()
+        let pipe = Pipe()
+
+        task.standardOutput = pipe
+        task.standardError = pipe
+        task.arguments = ["-c", command]
+        task.launchPath = "/bin/sh"
+        task.standardInput = nil
+        try task.run()
+        task.waitUntilExit()
+
+        return Int(task.terminationStatus)
     }
 
     static func readPinnedPacakgedVersions(from fileURL: URL) throws -> [URL: Version] {
