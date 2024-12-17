@@ -4,9 +4,13 @@ import XcodeProj
 
 struct PackageState {
     let url: URL
-    let versionRequirement: XCRemoteSwiftPackageReference.VersionRequirement
+    let versionRequirement: VersionRequirement?
     let pinnedVersion: Version
     let latestVersion: Version
+
+    var name: String {
+        url.lastPathComponent.replacing(/\.git$/, with: "")
+    }
 
     var comparison: PackageComparison {
         if pinnedVersion < latestVersion {
@@ -16,6 +20,10 @@ struct PackageState {
         } else {
             .unexpectedError
         }
+    }
+
+    var canUpdate: Bool {
+        comparison == .canUpdate
     }
 
     var stateDescriptionForTerminal: String {
@@ -35,6 +43,18 @@ struct PackageState {
         case .unexpectedError:
             "\(url) \("something is wrong with the script here", color: .red) - \(pinnedVersion) - \(latestVersion)"
         }
+    }
+
+    var changelogStateForTerminal: String {
+        """
+
+        Changelog for \(url, color: .green, style: .bold) \
+        from \
+        '\(pinnedVersion, color: .green, style: .bold)' \
+        to \
+        '\(latestVersion, color: .green, style: .bold)'
+
+        """
     }
 }
 
