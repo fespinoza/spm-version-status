@@ -1,12 +1,18 @@
 import ArgumentParser
 import Foundation
 
-struct VersionState: AsyncParsableCommand {
+struct Changelog: AsyncParsableCommand {
     static let configuration: CommandConfiguration = .init(
+        commandName: "changelog",
         abstract: """
-        Checks the versions of all imported packages in the project and compares them to their latest versions
+        Gets the changelog from the github releases of versions superior to the current version of a package.
+
+        It requires the GitHub command line installed to work.
         """
     )
+
+    @Argument var packageName: String?
+    @Flag var list: Bool = false
 
     func run() async throws {
         let contents = try FileManager.default.contentsOfDirectory(atPath: FileManager.default.currentDirectoryPath)
@@ -19,7 +25,7 @@ struct VersionState: AsyncParsableCommand {
                 xcworkspacePath: contents.first(where: { $0.contains(".xcworkspace") })
             )
 
-            try await VersionStateLogic(inputReader: xcodeReader).run()
+            try await ChangelogLogic(inputReader: xcodeReader).run(packageName: packageName, onlyListVersions: list)
 
         } else if let packageSwiftPath = contents.first(where: { $0 == "Package.swift" }),
                   let packageResolvedPath = contents.first(where: { $0 == "Package.resolved" })
@@ -31,7 +37,7 @@ struct VersionState: AsyncParsableCommand {
                 packageResolvedPath: packageResolvedPath
             )
 
-            try await VersionStateLogic(inputReader: packageReader).run()
+            try await ChangelogLogic(inputReader: packageReader).run(packageName: packageName, onlyListVersions: list)
         } else {
             print("No .xcodeproj nor Package.swift file found")
         }

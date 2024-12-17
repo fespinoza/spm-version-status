@@ -1,6 +1,8 @@
 import XcodeProj
 
-extension XCRemoteSwiftPackageReference.VersionRequirement {
+typealias VersionRequirement = XCRemoteSwiftPackageReference.VersionRequirement
+
+extension VersionRequirement {
     var currentVersion: String? {
         switch self {
         case let .upToNextMajorVersion(string):
