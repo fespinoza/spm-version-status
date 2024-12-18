@@ -6,7 +6,12 @@ Initial idea and reference taken from: https://github.com/gorillatech/spm-check-
 
 ## Installation
 
-Compile the script
+The preferred way, via homebrew:
+```bash
+brew install fespinoza/repo/spm-version-status
+```
+
+Or from source code, compile the script
 ```bash
 swift build --configuration release
 sudo cp -f .build/release/SPMVersionStatus /usr/local/bin/spm-version-status
